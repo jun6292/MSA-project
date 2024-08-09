@@ -1,7 +1,9 @@
 package com.sparta.msa_exam.order.service;
 
 import com.sparta.msa_exam.order.client.ProductFeignClient;
-import com.sparta.msa_exam.order.dto.OrderRequestDto;
+import com.sparta.msa_exam.order.common.exception.CommonException;
+import com.sparta.msa_exam.order.common.response.ErrorCode;
+import com.sparta.msa_exam.order.dto.OrderUpdateDto;
 import com.sparta.msa_exam.order.entity.Order;
 import com.sparta.msa_exam.order.repository.OrderRepository;
 import com.sparta.msa_exam.product.dto.ProductResponseDto;
@@ -20,6 +22,28 @@ public class OrderService {
 
     public List<ProductResponseDto> getProducts() {
         return productFeignClient.getProducts();
+    }
+
+    public void updateOrder(Long orderId, OrderUpdateDto orderUpdateDto) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CommonException(ErrorCode.ORDER_NOT_FOUND));
+        List<ProductResponseDto> products = getProducts();
+        if (isProductExist(
+                orderUpdateDto.productId(),
+                products.stream().map(p -> p.productId()).toList())
+        ) {
+            order.updateOrder(orderUpdateDto.productId());
+            orderRepository.save(order);
+        } else {
+            throw new CommonException(ErrorCode.CANNOT_FIND_PRODUCT);
+        }
+    }
+
+    public boolean isProductExist(Long productId, List<Long> existProductIds) {
+        if (existProductIds.contains(productId)) {
+            return true;
+        }
+        return false;
     }
 
 //    public void createOrder(OrderRequestDto orderRequestDto) {

@@ -1,5 +1,6 @@
 package com.sparta.msa_exam.order.entity;
 
+import com.sparta.msa_exam.order.dto.OrderUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,5 +31,11 @@ public class Order {
     public Order(String name, List<OrderProduct> productIds) {
         this.name = name;
         this.productIds = productIds;
+    }
+
+    public void updateOrder(Long productId) {
+        this.productIds.add(OrderProduct.builder()
+                .productId(productId)
+                .build());
     }
 }
