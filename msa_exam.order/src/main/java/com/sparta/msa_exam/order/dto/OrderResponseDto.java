@@ -1,14 +1,16 @@
 package com.sparta.msa_exam.order.dto;
 
-import com.sparta.msa_exam.product.dto.ProductResponseDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 import java.util.List;
 
 @Builder
 public record OrderResponseDto(
-        Long id,
-        String name,
-        List<ProductResponseDto> products
+        @JsonProperty("order_id")
+        Long orderId,
+
+        @JsonProperty("product_ids")
+        List<Long> productIds
 ) {
 }

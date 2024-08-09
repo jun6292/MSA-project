@@ -16,13 +16,12 @@ public class OrderController {
     @PostMapping("")
     public CommonResponse<?> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
         orderService.createOrder(orderRequestDto);
-        return CommonResponse.created("상품 주문 완료");
+        return CommonResponse.created("주문 추가 완료");
     }
 
     @GetMapping("/{orderId}")
     public CommonResponse<OrderResponseDto> getOrder(@PathVariable Long orderId) {
-        OrderResponseDto orderResponseDto = orderService.getOrder(orderId);
-        return CommonResponse.ok(orderResponseDto);
+        return CommonResponse.ok(orderService.getOrder(orderId));
     }
 
     @PutMapping("/{orderId}")
