@@ -9,7 +9,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.sparta.msa_exam.product.controller")
 public class ResponseHeaderAdvice implements ResponseBodyAdvice<Object> {
     @Value("${server.port}")
     private String serverPort;
