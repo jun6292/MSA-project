@@ -6,10 +6,10 @@ import com.sparta.msa_exam.order.common.response.ErrorCode;
 import com.sparta.msa_exam.order.dto.OrderRequestDto;
 import com.sparta.msa_exam.order.dto.OrderResponseDto;
 import com.sparta.msa_exam.order.dto.OrderUpdateDto;
+import com.sparta.msa_exam.order.dto.ProductClientResponseDto;
 import com.sparta.msa_exam.order.entity.Order;
 import com.sparta.msa_exam.order.entity.OrderProduct;
 import com.sparta.msa_exam.order.repository.OrderRepository;
-import com.sparta.msa_exam.product.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class OrderService {
     public OrderResponseDto readOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new CommonException(ErrorCode.ORDER_NOT_FOUND));
-        List<ProductResponseDto> products = getProducts();
+        List<ProductClientResponseDto> products = getProducts();
         OrderResponseDto orderResponseDto = OrderResponseDto.builder()
                 .orderId(order.getId())
                 .productIds(products.stream().map(p -> p.productId()).toList())
@@ -51,7 +51,7 @@ public class OrderService {
     }
 
 
-    public List<ProductResponseDto> getProducts() {
+    public List<ProductClientResponseDto> getProducts() {
         return productFeignClient.getProducts();
     }
 
@@ -59,7 +59,7 @@ public class OrderService {
     public void updateOrder(Long orderId, OrderUpdateDto orderUpdateDto) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new CommonException(ErrorCode.ORDER_NOT_FOUND));
-        List<ProductResponseDto> products = getProducts();
+        List<ProductClientResponseDto> products = getProducts();
         if (isProductExist(
                 orderUpdateDto.productId(),
                 products.stream().map(p -> p.productId()).toList())
