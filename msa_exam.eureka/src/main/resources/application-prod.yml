@@ -1,0 +1,18 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  application:
+    name: eureka-server
+
+server:
+  port: 19090
+
+eureka: # 유레카 서버 설정
+  client:
+    register-with-eureka: false
+    fetch-registry: false # 유레카 서버이므로 false로 설정
+    service-url:
+      defaultZone: http://localhost:19090/eureka/ # 클라이언트가 유레카 서버와 통신하기 위해 사용할 기본 서비스 URL
+  instance:
+    hostname: eureka-server # 유레카 서버의 호스트 이름
