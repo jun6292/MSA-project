@@ -66,9 +66,10 @@ public class JwtAuthenticationFilter implements GlobalFilter {
             String userId = claims.get("user_id", String.class);
             String role = claims.get("role", String.class);
 
-            // 추가적인 유효성 검증 로직
 
-
+            // feign client를 활용하여 auth의 토큰 검사 API 호출
+            // DB에 user 정보가 있는지 확인
+            // user 정보가 없다면 false 반환
 
             // 헤더에 사용자 정보 추가
             exchange.getRequest().mutate()
