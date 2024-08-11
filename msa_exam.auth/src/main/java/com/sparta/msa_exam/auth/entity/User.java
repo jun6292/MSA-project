@@ -14,7 +14,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 
