@@ -32,6 +32,12 @@ spring:
       hibernate:
         use_sql_comments: true
         format_sql: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      username: default
+      password: systempass
 server:
   port: 19093
 eureka:
