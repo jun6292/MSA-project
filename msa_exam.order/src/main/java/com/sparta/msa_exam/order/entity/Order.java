@@ -1,6 +1,5 @@
 package com.sparta.msa_exam.order.entity;
 
-import com.sparta.msa_exam.order.dto.OrderUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

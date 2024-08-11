@@ -1,37 +1,48 @@
 package com.sparta.msa_exam.auth.service;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import com.sparta.msa_exam.auth.common.exception.CommonException;
+import com.sparta.msa_exam.auth.common.response.ErrorCode;
+import com.sparta.msa_exam.auth.dto.JwtTokenResponseDto;
+import com.sparta.msa_exam.auth.dto.SignInRequestDto;
+import com.sparta.msa_exam.auth.dto.SignUpRequestDto;
+import com.sparta.msa_exam.auth.entity.User;
+import com.sparta.msa_exam.auth.repository.UserRepository;
+import com.sparta.msa_exam.auth.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    @Value("${spring.application.name}")
-    private String issuer;
+    public JwtTokenResponseDto signIn(String userId, String password) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
-    @Value("${service.jwt.access-expiration}")
-    private Long accessExpiration;
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new CommonException(ErrorCode.UNAUTHORIZED);
+        }
 
-    private final SecretKey secretKey;
-
-    public AuthService(@Value("${service.jwt.secret-key}") String secretKey) {
-        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
+        return jwtUtil.createAuthToken(user.getId(), user.getRole());
     }
 
-    public String createAuthToken(String user_id) {
-        return Jwts.builder()
-                .claim("user_id", user_id)
-                .claim("role", "ADMIN")
-                .issuer(issuer)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + accessExpiration))
-                .signWith(secretKey, io.jsonwebtoken.SignatureAlgorithm.HS512)
-                .compact();
+
+    public void signUp(SignUpRequestDto signUpRequestDto) {
+        if (userRepository.existsByUsername(signUpRequestDto.username())) {
+            throw new CommonException(ErrorCode.DUPLICATED_USER);
+        }
+
+        User user = User.builder()
+                .username(signUpRequestDto.username())
+                .password(passwordEncoder.encode(signUpRequestDto.password()))
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
     }
 }
