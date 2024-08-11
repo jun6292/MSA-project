@@ -24,7 +24,7 @@ public class AuthService {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
     }
 
-    public String createAccessToken(String user_id) {
+    public String createAuthToken(String user_id) {
         return Jwts.builder()
                 .claim("user_id", user_id)
                 .claim("role", "ADMIN")
