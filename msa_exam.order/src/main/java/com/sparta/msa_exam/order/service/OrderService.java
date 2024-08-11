@@ -39,7 +39,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponseDto getOrder(Long orderId) {
+    public OrderResponseDto readOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new CommonException(ErrorCode.ORDER_NOT_FOUND));
         List<ProductResponseDto> products = getProducts();
