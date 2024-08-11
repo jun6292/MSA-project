@@ -18,7 +18,7 @@ public class AuthController {
             @RequestBody SignInRequestDto signInRequestDto,
             @RequestParam("user_id") String userId
     ) {
-        return CommonResponse.ok(authService.signIn(userId, signInRequestDto.password()));
+        return CommonResponse.ok(authService.signIn(userId, signInRequestDto));
     }
 
     @PostMapping("/signUp")

@@ -20,11 +20,11 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public JwtTokenResponseDto signIn(String userId, String password) {
+    public JwtTokenResponseDto signIn(String userId, SignInRequestDto signInRequestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(signInRequestDto.password(), user.getPassword())) {
             throw new CommonException(ErrorCode.UNAUTHORIZED);
         }
 
