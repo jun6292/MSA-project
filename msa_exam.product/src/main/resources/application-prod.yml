@@ -1,0 +1,40 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  application:
+    name: product-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rds-address:3306/msa_exam?useSSL=false&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: root
+    password: password
+    hikari:
+      hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+      pool-name: jpa-hikari-pool
+      maximum-pool-size: 5
+      jdbc-url: ${spring.datasource.url}
+      username: ${spring.datasource.username}
+      password: ${spring.datasource.password}
+      driver-class-name: ${spring.datasource.driver-class-name}
+      idle-timeout: 300
+      max-lifetime: 300
+      data-source-properties:
+        rewriteBatchedStatements: true
+  jpa:
+    open-in-view: false
+    database: mysql
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        use_sql_comments: true
+        format_sql: false
+server:
+  port: 19093
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/
