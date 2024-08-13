@@ -32,9 +32,7 @@ public class Order {
         this.productIds = productIds;
     }
 
-    public void updateOrder(Long productId) {
-        this.productIds.add(OrderProduct.builder()
-                .productId(productId)
-                .build());
+    public void updateOrder(OrderProduct product) {
+        this.productIds.add(product);
     }
 }

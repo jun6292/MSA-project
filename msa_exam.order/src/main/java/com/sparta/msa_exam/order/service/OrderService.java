@@ -59,7 +59,12 @@ public class OrderService {
                 orderUpdateDto.productId(),
                 products.stream().map(p -> p.productId()).toList())
         ) {
-            order.updateOrder(orderUpdateDto.productId());
+            order.updateOrder(
+                    OrderProduct.builder()
+                            .productId(orderUpdateDto.productId())
+                            .order(order)
+                            .build()
+            );
             orderRepository.save(order);
         } else {
             throw new CommonException(ErrorCode.CANNOT_FIND_PRODUCT);
