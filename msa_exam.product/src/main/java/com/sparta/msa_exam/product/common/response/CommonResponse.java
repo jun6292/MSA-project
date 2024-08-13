@@ -22,7 +22,7 @@ public record CommonResponse<T>(
 ) {
     // success
     public static <T> CommonResponse<T> ok(@Nullable T data) {
-        return new CommonResponse<T>(HttpStatus.OK, true, data, null);
+        return new CommonResponse<>(HttpStatus.OK, true, data, null);
     }
 
     public static <T> CommonResponse<T> created(@Nullable final T data) {
