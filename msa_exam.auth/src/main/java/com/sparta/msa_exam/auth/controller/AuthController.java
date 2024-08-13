@@ -30,8 +30,8 @@ public class AuthController {
     }
 
     @GetMapping("/verify")
-    public CommonResponse<?> verifyUser(@RequestParam("user_id") String username) {
+    public Boolean verifyUser(@RequestParam("user_id") String username) {
         log.info("verifyUser: {}", username);
-        return CommonResponse.ok(authService.verifyUser(username));
+        return authService.verifyUser(username);
     }
 }
