@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        if (path.equals("/auth/signIn") || path.equals("/auth/signUp")) {
+        if (path.startsWith("/auth")) {
             return chain.filter(exchange);
         }
 
@@ -79,6 +79,7 @@ public class JwtAuthenticationFilter implements GlobalFilter {
                 // user_id 추출 로직
                 String userId = claimsJws.getPayload().get("user_id").toString();
                 // user_id 값으로 해당 유저가 회원가입한 유저인지 auth service를 통해 확인
+                log.info("##### user_id :: " + userId);
                 return authService.verifyUser(userId);
             } else {
                 return false;

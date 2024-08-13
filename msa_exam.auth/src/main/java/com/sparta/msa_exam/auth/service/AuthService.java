@@ -28,7 +28,7 @@ public class AuthService {
             throw new CommonException(ErrorCode.UNAUTHORIZED);
         }
 
-        return jwtUtil.createAuthToken(user.getId(), user.getRole());
+        return jwtUtil.createAuthToken(user.getUsername(), user.getRole());
     }
 
 

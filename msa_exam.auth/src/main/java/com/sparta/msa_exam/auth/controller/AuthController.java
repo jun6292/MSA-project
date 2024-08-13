@@ -5,11 +5,13 @@ import com.sparta.msa_exam.auth.dto.SignInRequestDto;
 import com.sparta.msa_exam.auth.dto.SignUpRequestDto;
 import com.sparta.msa_exam.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
     private final AuthService authService;
 
@@ -29,6 +31,7 @@ public class AuthController {
 
     @GetMapping("/verify")
     public CommonResponse<?> verifyUser(@RequestParam("user_id") String username) {
+        log.info("verifyUser: {}", username);
         return CommonResponse.ok(authService.verifyUser(username));
     }
 }
