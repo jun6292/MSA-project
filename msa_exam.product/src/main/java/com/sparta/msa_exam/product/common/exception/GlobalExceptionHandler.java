@@ -68,8 +68,7 @@ public class GlobalExceptionHandler {
     // 서버 내부 오류
     @ExceptionHandler(value = {java.lang.Exception.class})
     public CommonResponse<?> handleException(java.lang.Exception e) {
-        log.error("handleException() in GlobalExceptionHandle throw Exception : {}");
-        e.printStackTrace();
+        log.error("handleException() in GlobalExceptionHandle throw Exception : {}", e.getMessage(), e);
         return CommonResponse.fail(new CommonException(ErrorCode.SERVER_ERROR));
     }
 }
