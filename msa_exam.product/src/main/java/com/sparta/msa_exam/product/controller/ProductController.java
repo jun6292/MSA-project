@@ -6,6 +6,7 @@ import com.sparta.msa_exam.product.service.ProductService;
 import com.sparta.msa_exam.product.dto.ProductResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public CommonResponse<List<ProductResponseDto>> readProducts() {
-        return CommonResponse.ok(productService.readProducts());
+    public ResponseEntity<List<ProductResponseDto>> readProducts() {
+        return ResponseEntity.ok(productService.readProducts());
     }
 }

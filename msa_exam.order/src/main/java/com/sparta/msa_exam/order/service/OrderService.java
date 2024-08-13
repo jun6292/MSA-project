@@ -27,14 +27,8 @@ public class OrderService {
 
     @Transactional
     public void createOrder(OrderRequestDto orderRequestDto) {
-        List<OrderProduct> orderProductList = orderRequestDto.productIds().stream()
-                .map(productId -> OrderProduct.builder()
-                        .productId(productId)
-                        .build())
-                .toList();
         Order order = Order.builder()
                 .name(orderRequestDto.name())
-                .productIds(orderProductList)
                 .build();
         orderRepository.save(order);
     }
@@ -44,14 +38,13 @@ public class OrderService {
     public OrderResponseDto readOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new CommonException(ErrorCode.ORDER_NOT_FOUND));
-        List<ProductClientResponseDto> products = getProducts();
+        List<OrderProduct> orderProductList = order.getProductIds();
         OrderResponseDto orderResponseDto = OrderResponseDto.builder()
                 .orderId(order.getId())
-                .productIds(products.stream().map(p -> p.productId()).toList())
+                .productIds(orderProductList.stream().map(p -> p.getProductId()).toList())
                 .build();
         return orderResponseDto;
     }
-
 
     public List<ProductClientResponseDto> getProducts() {
         return productFeignClient.getProducts();
