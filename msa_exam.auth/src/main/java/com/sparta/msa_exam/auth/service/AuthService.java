@@ -20,8 +20,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public JwtTokenResponseDto signIn(String userId, SignInRequestDto signInRequestDto) {
-        User user = userRepository.findById(userId)
+    public JwtTokenResponseDto signIn(String username, SignInRequestDto signInRequestDto) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
         if (!passwordEncoder.matches(signInRequestDto.password(), user.getPassword())) {
@@ -47,7 +47,7 @@ public class AuthService {
     }
 
     // 회원 존재 여부 검증
-    public Boolean verifyUser(final String userId) {
-        return userRepository.findById(userId).isPresent();
+    public Boolean verifyUser(final String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 }

@@ -31,7 +31,7 @@ public class JwtUtil implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtTokenResponseDto createAuthToken(String userId, String role) {
+    public JwtTokenResponseDto createAuthToken(Long userId, String role) {
         String accessToken = Jwts.builder()
                 .claim("user_id", userId)
                 .claim("role", role)

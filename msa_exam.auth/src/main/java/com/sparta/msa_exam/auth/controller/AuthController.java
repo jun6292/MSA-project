@@ -16,9 +16,9 @@ public class AuthController {
     @GetMapping("/signIn")
     public CommonResponse<?> signIn(
             @RequestBody SignInRequestDto signInRequestDto,
-            @RequestParam("user_id") String userId
+            @RequestParam("user_id") String username
     ) {
-        return CommonResponse.ok(authService.signIn(userId, signInRequestDto));
+        return CommonResponse.ok(authService.signIn(username, signInRequestDto));
     }
 
     @PostMapping("/signUp")
@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @GetMapping("/verify")
-    public CommonResponse<?> verifyUser(@RequestParam("user_id") String userId) {
-        return CommonResponse.ok(authService.verifyUser(userId));
+    public CommonResponse<?> verifyUser(@RequestParam("user_id") String username) {
+        return CommonResponse.ok(authService.verifyUser(username));
     }
 }
