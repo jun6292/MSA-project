@@ -4,6 +4,7 @@ import com.sparta.msa_exam.product.common.response.CommonResponse;
 import com.sparta.msa_exam.product.dto.ProductRequestDto;
 import com.sparta.msa_exam.product.service.ProductService;
 import com.sparta.msa_exam.product.dto.ProductResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("")
-    public CommonResponse<?> createProduct(@RequestBody ProductRequestDto productRequestDto) {
+    public CommonResponse<?> createProduct(@Valid @RequestBody ProductRequestDto productRequestDto) {
         productService.createProduct(productRequestDto);
         return CommonResponse.created("상품 등록 완료");
     }

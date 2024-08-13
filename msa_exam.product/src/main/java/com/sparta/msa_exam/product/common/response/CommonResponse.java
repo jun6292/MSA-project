@@ -3,11 +3,14 @@ package com.sparta.msa_exam.product.common.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.msa_exam.product.common.exception.CommonException;
+import com.sparta.msa_exam.product.common.exception.CustomMethodArgumentNotValidException;
 import com.sparta.msa_exam.product.common.exception.RestApiException;
 import jakarta.annotation.Nullable;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -33,6 +36,14 @@ public record CommonResponse<T>(
 
     public static CommonResponse<Object> fail(final MethodArgumentTypeMismatchException e) {
         return new CommonResponse<>(HttpStatus.INTERNAL_SERVER_ERROR, false, null, new RestApiException(ErrorCode.INVALID_PARAMETER));
+    }
+
+    public static CommonResponse<Object> fail(final MethodArgumentNotValidException e) {
+        return new CommonResponse<>(HttpStatus.BAD_REQUEST, false, null, new CustomMethodArgumentNotValidException(e));
+    }
+
+    public static CommonResponse<Object> fail(final ConstraintViolationException e) {
+        return new CommonResponse<>(HttpStatus.BAD_REQUEST, false, null, new CustomMethodArgumentNotValidException(e));
     }
 
     public static CommonResponse<Object> fail(final MissingServletRequestParameterException e) {

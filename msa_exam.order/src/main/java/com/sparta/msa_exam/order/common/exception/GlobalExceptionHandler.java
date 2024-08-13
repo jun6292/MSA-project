@@ -2,9 +2,11 @@ package com.sparta.msa_exam.order.common.exception;
 
 import com.sparta.msa_exam.order.common.response.CommonResponse;
 import com.sparta.msa_exam.order.common.response.ErrorCode;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,6 +41,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
     public CommonResponse<?> handleMessageNotReadableException(HttpMessageNotReadableException e) {
         log.error("handleArgumentNotValidException() in GlobalExceptionHandler throw HttpMessageNotReadableException : {}", e.getMessage());
+        return CommonResponse.fail(e);
+    }
+
+    // @Valid 어노테이션을 사용하여 검증을 수행할 때 발생하는 예외
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public CommonResponse<?> handleArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("handleArgumentNotValidException() in GlobalExceptionHandler throw MethodArgumentNotValidException : {}", e.getMessage());
+        return CommonResponse.fail(e);
+    }
+
+    // @Validated 어노테이션을 사용하여 검증을 수행할 때 발생하는 예외
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public CommonResponse<?> handleArgumentNotValidException(ConstraintViolationException e) {
+        log.error("handleArgumentNotValidException() in GlobalExceptionHandler throw ConstraintViolationException : {}", e.getMessage());
         return CommonResponse.fail(e);
     }
 
