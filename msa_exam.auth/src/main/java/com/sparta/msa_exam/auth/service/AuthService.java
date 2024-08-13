@@ -45,4 +45,9 @@ public class AuthService {
 
         userRepository.save(user);
     }
+
+    // 회원 존재 여부 검증
+    public Boolean verifyUser(final String userId) {
+        return userRepository.findById(userId).isPresent();
+    }
 }

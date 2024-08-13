@@ -26,4 +26,9 @@ public class AuthController {
         authService.signUp(signUpRequestDto);
         return CommonResponse.created("회원가입이 완료되었습니다.");
     }
+
+    @GetMapping("/verify")
+    public CommonResponse<?> verifyUser(@RequestParam("user_id") String userId) {
+        return CommonResponse.ok(authService.verifyUser(userId));
+    }
 }
